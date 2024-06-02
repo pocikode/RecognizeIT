@@ -8,7 +8,8 @@ export default function Navigation({ colorScheme }) {
   return (
     <NavigationContainer
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <RootNavigator />
+      {/* <RootNavigator /> */}
+      <BottomTabNavigator />
     </NavigationContainer>
   );
 }

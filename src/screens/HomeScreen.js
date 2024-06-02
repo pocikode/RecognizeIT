@@ -10,7 +10,7 @@ export default function TabOneScreen() {
         contentContainerStyle={styles.contentContainer}
       >
         <View style={styles.headerContainer}>
-          <Image source={require('../../assets/logo.png')} />
+          <Image source={require('../../assets/images/logo.png')} />
         </View>
         <View style={styles.getStartedContainer}>
           <Text style={styles.getStartedText}>
@@ -21,7 +21,8 @@ export default function TabOneScreen() {
 
           <View style={styles.demoContainer}>
             <Text style={styles.demoText}>
-              <Text style={{ fontWeight: "bold" }}>Made By:</Text> Agus Supriyatna (20210710150)
+              {/* <Text style={{ fontWeight: "bold" }}>Made By:</Text> Agus Supriyatna (20210710150) */}
+              <Text className="font-bold">Made By:</Text> Agus Supriyatna (20210710150)
             </Text>
           </View>
         </View>
