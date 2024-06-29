@@ -7,6 +7,7 @@ import { ActivityIndicator, Alert, Image, ScrollView, StyleSheet, TouchableOpaci
 import * as jpeg from "jpeg-js";
 import * as ImageManipulator from "expo-image-manipulator";
 import { fetch } from "@tensorflow/tfjs-react-native";
+import * as FileSystem from 'expo-file-system';
 
 export default function ClassifyImageScreen() {
   const [isTfReady, setIsTfReady] = useState(false);
@@ -61,9 +62,12 @@ export default function ClassifyImageScreen() {
     try {
       const imageAssetPath = Image.resolveAssetSource({uri});
       console.log("IMGG:", imageAssetPath);
-      const response = await fetch(imageAssetPath.uri, {}, { isBinary: true });
-      console.log('masuk1');
-      const rawImageData = await response.arrayBuffer();
+      const imgb64 = await FileSystem.readAsStringAsync(uri, {encoding: FileSystem.EncodingType.Base64})
+      console.log('IMGB64:', imgb64);
+      // const response = await fetch(imageAssetPath.uri, {}, { isBinary: true });
+      // console.log('masuk1');
+      // const rawImageData = await response.arrayBuffer();
+      const rawImageData = tf.util.encodeString(imgb64, 'base64').buffer;
       const imageTensor = imageToTensor(rawImageData);
       const newPredictions = await model.current.classify(imageTensor);
       setPredictions(newPredictions);
@@ -138,7 +142,7 @@ export default function ClassifyImageScreen() {
           <View style={styles.predictionWrapper}>
             {isModelReady && imageToAnalyze && (
               <Text style={styles.text}>
-                Predictions: {predictions ? "" : "Predicting..."}
+                <Text style={{ fontWeight: 'bold'}}>Predictions</Text>: {predictions ? "" : "Predicting..."}
               </Text>
             )}
             {isModelReady &&
@@ -152,7 +156,8 @@ export default function ClassifyImageScreen() {
 
                 return (
                   <Text key={index} style={styles.text}>
-                    {p.className}: {p.probability}
+                    {/* {p.className}: {p.probability} */}
+                    {p.className}: {Math.ceil(p.probability*1000) / 1000}%
                   </Text>
                 );
               })}
